@@ -2,7 +2,7 @@
 session_start();
 include 'koneksi.php';
 // munculkan semua kolom dari table user
-$queryUser = mysqli_query($koneksi, "SELECT * FROM user");
+$query = mysqli_query($koneksi, "SELECT * FROM instruktur");
 
 // $rowUser = mysqli_fetch_assoc($queryUser);
 
@@ -13,8 +13,8 @@ $queryUser = mysqli_query($koneksi, "SELECT * FROM user");
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     //query hapus data berdasarkan id
-    $delete = mysqli_query($koneksi, "DELETE FROM user WHERE id='$id'");
-    header("location:user.php?hapus=berhasil");
+    $delete = mysqli_query($koneksi, "DELETE FROM instruktur WHERE id='$id'");
+    header("location:instruktur.php?hapus=berhasil");
 }
 ?>
 
@@ -80,22 +80,23 @@ if (isset($_GET['delete'])) {
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="card">
-                                    <div class="card-header">Data User</div>
+                                    <div class="card-header">Data Instruktur</div>
 
                                     <div class="card-body">
                                         <?php if (isset($_GET['hapus'])) : ?>
                                             <div class="alert alert-success" role="alert">Data berhasil dihapus</div>
                                         <?php endif ?>
                                         <div align="right" class="mb-3">
-                                            <a href="tambah-user.php" class="bnt btn-primary">Tambah</a>
+                                            <a href="tambah-instruktur.php" class="btn btn-primary">Tambah</a>
 
                                         </div>
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>No</th>
+                                                    <th>Foto</th>
                                                     <th>Nama</th>
-                                                    <th>Email</th>
+                                                    <th>Jurusan</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
@@ -103,17 +104,18 @@ if (isset($_GET['delete'])) {
 
                                                 <?php
                                                 $no = 1;
-                                                while ($rowUser = mysqli_fetch_assoc($queryUser)) { ?>
+                                                while ($row = mysqli_fetch_assoc($query)) { ?>
 
                                                     <tr>
                                                         <td><?php echo $no++ ?></td>
-                                                        <td><?php echo $rowUser['nama'] ?> </td>
-                                                        <td><?php echo $rowUser['email'] ?> </td>
+                                                        <td><img src="upload/<?php echo $row['foto'] ?>" alt=""></td>
+                                                        <td><?php echo $row['nama_instruktur'] ?> </td>
+                                                        <td><?php echo $row['jurusan_instruktur'] ?> </td>
                                                         <td>
-                                                            <a href="tambah-user.php?edit=<?php echo $rowUser['id'] ?>" class="btn btn-success btn-sm">
+                                                            <a href="tambah-instruktur.php?edit=<?php echo $row['id'] ?>" class="btn btn-success btn-sm">
                                                                 <span class="tf-icon bx bx-pencil bx-18"></span>
                                                             </a>
-                                                            <a onclick="return confirm('hapus jangan?')" href="user.php?delete=<?php echo $rowUser['id'] ?>" class="btn btn-danger btn-sm">
+                                                            <a onclick="return confirm('hapus jangan?')" href="instruktur.php?delete=<?php echo $row['id'] ?>" class="btn btn-danger btn-sm">
                                                                 <span class="tf-icon bx bx-trash bx-18"></span>
                                                             </a>
                                                         </td>
